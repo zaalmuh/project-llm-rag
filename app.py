@@ -13,10 +13,16 @@ from huggingface_hub import login
 from litellm import completion
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 load_dotenv()
-gemini_api_key = os.getenv("GEMINI_API_KEY")
+# gemini_api_key = os.getenv("GEMINI_API_KEY")
+# huggingface_token = os.getenv("HUGGINGFACE_TOKEN")
+# groq_api_key = os.getenv("GROQ_API_KEY")
+
+gemini_api_key = st.secrets["GEMINI_API_KEY"]
+huggingface_token = st.secrets["HUGGINGFACE_TOKEN"]
+groq_api_key = st.secrets["GROQ_API_KEY"]
+
 client = chromadb.Client() # Use a client to connect to a running ChromaDB instance
 text_embedding_model = SentenceTransformer("all-MiniLM-L6-v2")
-huggingface_token = os.getenv("HUGGINGFACE_TOKEN")
 
 if huggingface_token:
     login(token=huggingface_token)
@@ -25,7 +31,7 @@ arxiv_tool = ArxivQueryRun()
 def generate_response(query, context, provider):
     prompt = f"Query: {query}\nContext: {context}\nAnswer:"
     if provider == "huggingface":
-        api_key = os.getenv("HUGGINGFACE_TOKEN")
+        api_key = huggingface_token
         model = "huggingface/HuggingFaceH4/zephyr-7b-beta"  # HuggingFace Zephyr
         response = completion(
             model=model,
@@ -33,7 +39,7 @@ def generate_response(query, context, provider):
             api_key=api_key,
         )
     elif provider == "groq":
-        api_key = os.getenv("GROQ_API_KEY")
+        api_key = groq_api_key
         model = "llama3-70b-8192"  # Groq Llama3 70B
         response = completion(
             model=model,

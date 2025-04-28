@@ -7,3 +7,4 @@ huggingface_hub
 litellm
 python-dotenv
 pysqlite3-binary
+langchain-community
