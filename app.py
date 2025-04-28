@@ -1,3 +1,6 @@
+__import__('pysqlite3') 
+import sys 
+sys.modules['sqlite3'] = sys.modules.pop('pysqlite3')
 import os
 import PyPDF2
 import streamlit as st
@@ -7,7 +10,6 @@ from litellm import completion
 from langchain_community.tools import ArxivQueryRun
 from dotenv import load_dotenv
 from huggingface_hub import login
-from models import generate_response
 from litellm import completion
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 load_dotenv()
